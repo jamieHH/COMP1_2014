@@ -132,16 +132,23 @@ def IsNextCardHigher(LastCard, NextCard):
 
 def GetPlayerName():
   print()
-  PlayerName = input('Please enter your name: ')
-  print()
+  choice = GetChoiceFromUser('Do you want to add your score to the high score table? (y or n): ')
+  if choice == 'y':
+    valid = False
+    while valid == False:
+      PlayerName = input('Please enter your name: ')
+      if PlayerName != '':
+        valid = True
+      else:
+        print('Enter a valid name.')
+    print()
+  elif choice == 'n':
+    PlayerName = False
   return PlayerName
 
-def GetChoiceFromUser():
-  Choice = input('Do you think the next card will be higher than the last card (enter y or n)? ').lower()
-  if Choice == 'yes':
-    Choice = 'y'
-  elif Choice == 'no':
-    Choice = 'n'
+def GetChoiceFromUser(prompt):
+  Choice = input(prompt).lower()
+  Choice = Choice[0]
   return Choice
 
 def DisplayEndOfGameMessage(Score):
@@ -176,20 +183,21 @@ def DisplayRecentScores(RecentScores):
 
 def UpdateRecentScores(RecentScores, Score):
   PlayerName = GetPlayerName()
-  FoundSpace = False
-  Count = 1
-  while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
-    if RecentScores[Count].Name == '':
-      FoundSpace = True
-    else:
-      Count = Count + 1
-  if not FoundSpace:
-    for Count in range(1, NO_OF_RECENT_SCORES):
-      RecentScores[Count].Name = RecentScores[Count + 1].Name
-      RecentScores[Count].Score = RecentScores[Count + 1].Score
-    Count = NO_OF_RECENT_SCORES
-  RecentScores[Count].Name = PlayerName
-  RecentScores[Count].Score = Score
+  if PlayerName != False:
+    FoundSpace = False
+    Count = 1
+    while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
+      if RecentScores[Count].Name == '':
+        FoundSpace = True
+      else:
+        Count = Count + 1
+    if not FoundSpace:
+      for Count in range(1, NO_OF_RECENT_SCORES):
+        RecentScores[Count].Name = RecentScores[Count + 1].Name
+        RecentScores[Count].Score = RecentScores[Count + 1].Score
+      Count = NO_OF_RECENT_SCORES
+    RecentScores[Count].Name = PlayerName
+    RecentScores[Count].Score = Score
 
 def PlayGame(Deck, RecentScores):
   LastCard = TCard()
@@ -202,7 +210,7 @@ def PlayGame(Deck, RecentScores):
     GetCard(NextCard, Deck, NoOfCardsTurnedOver)
     Choice = ''
     while (Choice != 'y') and (Choice != 'n'):
-      Choice = GetChoiceFromUser()
+      Choice = GetChoiceFromUser('Do you think the next card will be higher than the last card (enter y or n)? ')
     DisplayCard(NextCard)
     NoOfCardsTurnedOver = NoOfCardsTurnedOver + 1
     Higher = IsNextCardHigher(LastCard, NextCard)
