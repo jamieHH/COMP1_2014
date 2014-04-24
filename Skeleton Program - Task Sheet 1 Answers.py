@@ -30,14 +30,17 @@ def SetAceHighOrLow():
 def DisplayOptions():
   print('OPTIONS MENU')
   print()
-  print('1. set Ace to be HIGH or LOW ')
+  print('1. Set Ace to be HIGH or LOW ')
+  print('q. Quit')
   print()
 
 def SetOptions():
+  DisplayOptions()
   choice = GetMenuChoice()
   if choice == '1':
     SetAceHighOrLow()
-  elif choice = 'q':
+  elif choice == 'q':
+    pass
     
 def GetRank(RankNo):  
   Rank = ''
@@ -274,7 +277,7 @@ if __name__ == '__main__':
     elif Choice == '4':
       ResetRecentScores(RecentScores)
     elif Choice == '5':
-      ######################################################
+      SetOptions()
 
 
 
