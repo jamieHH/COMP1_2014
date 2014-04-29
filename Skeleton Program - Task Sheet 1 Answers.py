@@ -5,6 +5,7 @@
 
 import random
 from datetime import date
+import pdb
 
 NO_OF_RECENT_SCORES = 3
 
@@ -31,6 +32,7 @@ def BubbleSortScores(List):
     swapMade = False
     listLength = listLength -1
     for count in range(listLength):
+      count = 1
       if List[count].Score > List[count +1].Score:  ###################
         temp = List[count +1]
         List[count] = List[count +1]
