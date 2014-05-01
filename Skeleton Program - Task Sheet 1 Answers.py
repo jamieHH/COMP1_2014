@@ -25,28 +25,25 @@ RecentScores = [None]
 Choice = ''
 acerank = False
 
-def BubbleSortScores(List):
+def BubbleSortScores(RecentScores):
+  pdb.set_trace()
   swapMade = True
-  listLength = len(List)
   while swapMade:
     swapMade = False
-    listLength = listLength -1
-    for count in range(listLength):
-      count = 1
-      if List[count].Score > List[count +1].Score:  ###################
-        temp = List[count +1]
-        List[count] = List[count +1]
-        List[count] = temp
+    for count in range(1,len(RecentScores) -1):
+      if RecentScores[count].Score > RecentScores[count +1].Score:  ########
+        temp = RecentScores[count +1]
+        RecentScores[count] = RecentScores[count +1]
+        RecentScores[count] = temp
         swapMade = True
-  return List
 
 
 def SetAceHighOrLow():
   global acerank
-  choice = input('Set Ace (H)igh or (L)ow').lower()[0]
-  if choice == 'H':
+  choice = input('Set Ace (H)igh or (L)ow: ').lower()[0]
+  if choice == 'h':
     acerank = True
-  elif choice == 'L':
+  elif choice == 'l':
     acerank = False
     
 
@@ -61,7 +58,7 @@ def SetOptions():
   DisplayOptions()
   choice = GetMenuChoice()
   if choice == '1':
-    SetAceHighOrLow()
+    SetAceHighOrLow()    
   elif choice == 'q':
     pass
     
@@ -136,8 +133,9 @@ def LoadDeck(Deck):
     Deck[Count].Suit = int(LineFromFile)
     LineFromFile = CurrentFile.readline()
     Deck[Count].Rank = int(LineFromFile)
-    if acerank == True and Deck[count].rank == 1:
-      Deck[count].Rank = 14
+
+    if acerank == True and Deck[Count].Rank == 1:
+      Deck[Count].Rank = 14
     Count = Count + 1 
 
 def ShuffleDeck(Deck):
@@ -209,15 +207,14 @@ def ResetRecentScores(RecentScores):
     RecentScores[Count].Score = 0
     RecentScores[Count].Date = None
 
-def DisplayRecentScores(RecentScores):
-  RecentScores = BubbleSortScores(RecentScores)  ####################
+def DisplayRecentScores(RecentScores):  
   print()
   print('Recent Scores: ')
   print()
   print("{0:<12}{1:<10}{2:<5}".format("Date","Name","Score"))
   print()
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
-    if RecentScores[Count].Date != None:
+    if RecentScores[Count].Date != None:    
       ScoreDate = RecentScores[Count].Date.strftime("%d/%m/%Y")
     else:
       ScoreDate = "N/A"
@@ -236,6 +233,7 @@ def UpdateRecentScores(RecentScores, Score):
       valid = True
     else:
       print("Please enter a valid choice (y or n)")
+
 
   if Choice == "y":
     PlayerName = GetPlayerName()
@@ -300,6 +298,8 @@ if __name__ == '__main__':
       LoadDeck(Deck)
       PlayGame(Deck, RecentScores)
     elif Choice == '3':
+      pdb.set_trace()
+      BubbleSortScores(RecentScores)  ##
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
