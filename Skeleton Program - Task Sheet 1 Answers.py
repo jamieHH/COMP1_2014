@@ -25,18 +25,33 @@ RecentScores = [None]
 Choice = ''
 acerank = False
 
+def LoadScores():
+  try:
+    File = open('Save_Scores.txt',mode='r',encoding='utf-8')
+    for inx in range(1,len(RecentScores)):
+      RecentScores[inx].Name = File.readline().rstrip('\n')
+      RecentScores[inx].Score = File.readline().rstrip('\n')
+      RecentScores[inx].Date = File.readline().rstrip('\n')
+  except IOError:
+    print('No score files found.')
+
+def SaveScores(RecentScores):
+  File = open('Save_Scores.txt',mode='w',encoding='utf-8')
+  for inx in range(1,len(RecentScores)):
+    File.write(RecentScores[inx].Name +'\n')
+    File.write(str(RecentScores[inx].Score) +'\n')
+    File.write(str(RecentScores[inx].Date) +'\n')
+
 def BubbleSortScores(RecentScores):
-  pdb.set_trace()
   swapMade = True
   while swapMade:
     swapMade = False
     for count in range(1,len(RecentScores) -1):
-      if RecentScores[count].Score > RecentScores[count +1].Score:  ########
-        temp = RecentScores[count +1]
+      if RecentScores[count].Score < RecentScores[count +1].Score:
+        temp = RecentScores[count]
         RecentScores[count] = RecentScores[count +1]
-        RecentScores[count] = temp
+        RecentScores[count +1] = temp
         swapMade = True
-
 
 def SetAceHighOrLow():
   global acerank
@@ -113,6 +128,7 @@ def DisplayMenu():
   print('3. Display recent scores')
   print('4. Reset recent scores')
   print('5. Options')
+  print('6. Save Scores')
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
 
@@ -227,8 +243,9 @@ def DisplayRecentScores(RecentScores):
 def UpdateRecentScores(RecentScores, Score):
   valid = False
   while not valid:
-    Choice = input("Do you want to add your score to the high score table? (y or n): ")
-    Choice = Choice.lower()[0]
+    #Choice = input("Do you want to add your score to the high score table? (y or n): ").lower()[0]
+    print('Your Score will be added to the table ')
+    Choice = "y"
     if Choice in ["y","n"]:
       valid = True
     else:
@@ -287,6 +304,7 @@ if __name__ == '__main__':
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores.append(TRecentScore())
   Choice = ''
+  LoadScores()    #####################
   while Choice != 'q':
     DisplayMenu()
     Choice = GetMenuChoice()
@@ -298,13 +316,14 @@ if __name__ == '__main__':
       LoadDeck(Deck)
       PlayGame(Deck, RecentScores)
     elif Choice == '3':
-      pdb.set_trace()
-      BubbleSortScores(RecentScores)  ##
+      BubbleSortScores(RecentScores)  ####
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
     elif Choice == '5':
       SetOptions()
+    elif Choice == '6':
+      SaveScores(RecentScores)
 
 
 
